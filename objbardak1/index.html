@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/102/three.js"></script>
+    <script src="https://s3.amazonaws.com/coursetro/stuff/obj.js"></script>
+    <script src="https://s3.amazonaws.com/coursetro/stuff/mtl.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/TweenMax.min.js"></script>
+
+    <script>
+
+
+
+    </script>
+
+
+<script>
+
+var scene = new THREE.Scene();
+
+var camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000)
+camera.position.z = 25;
+
+
+var renderer = new THREE.WebGLRenderer({antialias:true, alpha:true});
+renderer.setClearColor("#e5e5e5");
+renderer.setSize(window.innerWidth,window.innerHeight);
+
+document.body.appendChild(renderer.domElement);
+
+window.addEventListener('resize',() => {
+
+    renderer.setSize(window.innerWidth,window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+
+    camera.updateProjectionMatrix();
+})
+
+var light = new THREE.PointLight(0xFFFFFF, 1.4,1000)
+light.position.set(0,15,15);
+scene.add(light);
+
+var Bardak1;
+
+var mtlLoader = new THREE.MTLLoader();
+mtlLoader.load('Bardak1.mtl', function (materials){
+
+
+    materials.preload();
+
+    var objLoader = new THREE.OBJLoader();
+    objLoader.setMaterials(materials);
+    objLoader.load('Bardak1.obj', function (object) {
+
+        scene.add(object);
+        Bardak1 = object;
+
+        object.position.y -= 5;
+        object.rotation.x = 0;
+
+
+
+    });
+});
+
+
+
+var render = function() {
+    requestAnimationFrame(render);
+
+    Bardak1.rotation.y -= .002;
+    
+    renderer.render(scene, camera);
+}
+
+    render();
+
+
+</script>
+
+
+</body>
+</html>
